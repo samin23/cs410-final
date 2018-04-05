@@ -4,24 +4,30 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  constructor(props){
-    super(props)
+  constructor(){
+    super();
     this.state = {
-      searchQuery: "",
-      results: null
-    }
+      results: undefined
+    };
+
+    this.baseUrl =
+        "https://www.googleapis.com/customsearch/v1?key=AIzaSyBpXIM30QZZ3vaNakuU0oiYwRl9hMBIFps" +
+        "&cx=010701151667155428281:junz-utdbgg&q=";
+    this.searchQuery = "";
+
     this.updateInputValue = this.updateInputValue.bind(this);
     this.getResults = this.getResults.bind(this)
   }
+
+  // API TOKEN
   //AIzaSyBpXIM30QZZ3vaNakuU0oiYwRl9hMBIFps
 
-  getResults(){
-    console.log("here");
-    let self = this
-    var url = "https://www.googleapis.com/customsearch/v1?key=AIzaSyBpXIM30QZZ3vaNakuU0oiYwRl9hMBIFps&cx=010701151667155428281:junz-utdbgg&q=" + this.state.searchQuery
+  getResults() {
+    let self = this;
+    let url = this.baseUrl + this.searchQuery;
     fetch(url, {
       method: 'GET',
-      headers:{
+      headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials':true,
         'Access-Control-Allow-Methods':'POST, GET'
@@ -30,51 +36,49 @@ class App extends Component {
     .then(function(response) {
       return response.json();
     })
-    .then(function(myJson) {
-      console.log(myJson.items);
+    .then(function(results) {
+      console.log(results.items);
       self.setState({
-        results: myJson.items,
-        searchQuery:"",
+        results: results.items
       });
     });
-    }
-  updateInputValue(event){
-    this.setState({ searchQuery: event.target.value });
   }
-  render() {
-    if(this.state.results == null){
-    return (
-      <div>
-      <div>
-      <input value={this.state.inputValue} onChange={this.updateInputValue}/>
-      <Button className="ui button" role="button" onClick={this.getResults}>submit</Button>
-      </div>
-      </div>
 
-    );
-    }
-    else{
+  updateInputValue(event){
+    this.searchQuery = event.target.value;
+  }
+
+  render() {
+    if(this.state.results === undefined){
       return (
         <div>
-        <div>
-        <input value={this.state.inputValue} onChange={this.updateInputValue}/>
-        <Button className="ui button" role="button" onClick={this.getResults}>submit</Button>
+          <input value={this.state.inputValue} onChange={this.updateInputValue}/>
+          <Button className="ui button" role="button" onClick={this.getResults}>submit</Button>
         </div>
-        <ul>
-          {this.state.results.map((row) => {
-            return (
-              <li key={row.id}>
-                <div>{row.title}</div>
-                <div>{row.snippet}</div>
-              </li>
-            )
-          })}
-        </ul>
-        </div>
+
+      );
+    } else {
+        return (
+          <div>
+            <div>
+              <input value={this.state.inputValue} onChange={this.updateInputValue}/>
+              <Button className="ui button" role="button" onClick={this.getResults}>Search</Button>
+            </div>
+            <ul>
+              {
+                this.state.results.map((row) => {
+                  return (
+                    <li key={row.id}>
+                      <div>{row.title}</div>
+                      <div>{row.snippet}</div>
+                    </li>
+                  )
+                })}
+            </ul>
+          </div>
         )
     }
   }
-
 }
 
 export default App;
