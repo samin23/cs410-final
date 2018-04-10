@@ -1,21 +1,26 @@
 import React, {Component} from 'react';
 import {Button, Input, Label, Dropdown} from 'semantic-ui-react'
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios'
 
-let RoleOptions = {
-    Undergraduate_Student: 0,
-    Graduate_Student: 1,
-    Transfer_Student: 2,
-    Prospective_Student: 3
-};
-
 const roleOptions = [
-    {text: "Undergraduate Student", value: RoleOptions.Undergraduate_Student},
-    {text: "Graduate Student", value: RoleOptions.Graduate_Student},
-    {text: "Transfer Student", value: RoleOptions.Transfer_Student},
-    {text: "Prospective Student", value: RoleOptions.Prospective_Student}
+    {text: "Undergraduate Student", value: "Undergraduate Student"},
+    {text: "Graduate Student", value: "Graduate Student"},
+    {text: "Transfer Student", value: "Transfer Student"},
+    {text: "Prospective Student", value: "Prospective Student"}
+];
+
+const filetypeOptions = [
+    { text: 'Article', value: 'article' },
+    { text: 'Basic Page', value: 'basic_page' },
+    { text: 'Book Page', value: 'book_page' },
+    { text: 'Carousel', value: 'carousel' },
+    { text: 'Events', value: 'events' },
+    { text: 'Faculty Profile', value: 'faculty_profile' },
+    { text: 'Memoriam', value: 'memoriam' },
+    { text: 'News', value: 'news' },
+    { text: 'Webform', value: 'webform' },
+    { text: 'Welcome', value: 'welcome' },
 ];
 
 class App extends Component {
@@ -30,10 +35,12 @@ class App extends Component {
             "&cx=008731622318034957631:wtj28fwp1ew&q=";
         this.searchQuery = "";
         this.roleText = "Undergraduate Student";
+        this.filetypes = [];
 
         this.updateSearchQuery = this.updateSearchQuery.bind(this);
         this.fetchResults = this.fetchResults.bind(this);
         this.updateRole = this.updateRole.bind(this);
+        this.updateFiletypes = this.updateFiletypes.bind(this);
     }
 
     // API TOKEN
@@ -52,10 +59,15 @@ class App extends Component {
                        size='big'/>
                 <Button size='big' onClick={this.fetchResults}>Submit</Button>
                 <Dropdown placeholder='Role'
-                          selection defaultValue={0}
+                          selection defaultValue="Undergraduate Student"
                           options={roleOptions}
                           onChange={this.updateRole}
-                          size={'massive'}/>
+                          size='massive'/>
+                <Dropdown placeholder='File Type'
+                            fluid multiple selection
+                            size='massive'
+                            options={filetypeOptions}
+                            onChange={this.updateFiletypes}/>
             </div>;
 
         if (this.state.results.length === 0) {
@@ -106,8 +118,18 @@ class App extends Component {
         console.log('FETCHING DATA');
         let searchQuery = this.searchQuery;
         let roleText = this.roleText;
+        let filetypes = this.filetypes;
+        let filetypesQuery = "";
 
-        let queryUrl = this.roleText + " " + this.searchQuery;
+        if (filetypes.length > 0) {
+            filetypesQuery += "type:";
+            for (let i = 0; i < filetypes.length - 1; i++) {
+                filetypesQuery += filetypes[i] + ",";
+            }
+            filetypesQuery += filetypes[filetypes.length-1];
+        }
+
+        let queryUrl = roleText + " " + searchQuery + " " + filetypesQuery;
         console.log(queryUrl);
         let encodedQueryUrl = encodeURI(queryUrl);
 
@@ -142,9 +164,13 @@ class App extends Component {
     }
 
     updateRole(e, data) {
-        let value = data.value;
-        console.log(value);
-        this.roleText = roleOptions[value].text;
+        this.roleText = data.value;
+        console.log(this.roleText);
+    }
+
+    updateFiletypes(e, data) {
+        this.filetypes = data.value;
+        console.log(this.filetypes);
     }
 }
 
