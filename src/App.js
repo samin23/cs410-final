@@ -36,11 +36,13 @@ class App extends Component {
         this.searchQuery = "";
         this.roleText = "Undergraduate Student";
         this.filetypes = [];
+        this.excludedWordsText = "";
 
         this.updateSearchQuery = this.updateSearchQuery.bind(this);
         this.fetchResults = this.fetchResults.bind(this);
         this.updateRole = this.updateRole.bind(this);
         this.updateFiletypes = this.updateFiletypes.bind(this);
+        this.updateExcludedWords = this.updateExcludedWords.bind(this);
     }
 
     // API TOKEN
@@ -68,6 +70,12 @@ class App extends Component {
                             size='massive'
                             options={filetypeOptions}
                             onChange={this.updateFiletypes}/>
+                <div>
+                    <Label>Exclude Words (Space Separated): </Label>
+                    <Input placeholder='Enter Words to Exclude'
+                           onChange={this.updateExcludedWords}
+                           size='big'/>
+                </div>
             </div>;
 
         if (this.state.results.length === 0) {
@@ -120,6 +128,7 @@ class App extends Component {
         let roleText = this.roleText;
         let filetypes = this.filetypes;
         let filetypesQuery = "";
+        let excludedWordsQuery = "";
 
         if (filetypes.length > 0) {
             filetypesQuery += "type:";
@@ -129,7 +138,15 @@ class App extends Component {
             filetypesQuery += filetypes[filetypes.length-1];
         }
 
-        let queryUrl = roleText + " " + searchQuery + " " + filetypesQuery;
+        let excludedWords = this.excludedWordsText.split(" ");
+        if (excludedWords.length > 0) {
+            excludedWords.forEach(function(excludedWord) {
+               excludedWordsQuery += "-" + excludedWord + " ";
+            });
+        }
+
+        let queryUrl = roleText + " " + searchQuery +
+            " " + filetypesQuery + " " + excludedWordsQuery;
         console.log(queryUrl);
         let encodedQueryUrl = encodeURI(queryUrl);
 
@@ -171,6 +188,11 @@ class App extends Component {
     updateFiletypes(e, data) {
         this.filetypes = data.value;
         console.log(this.filetypes);
+    }
+
+    updateExcludedWords(e, data) {
+        this.excludedWordsText = data.value;
+        console.log(this.excludedWordsText);
     }
 }
 
