@@ -56,20 +56,20 @@ class App extends Component {
 
     render() {
       return(
-            <div>
+            <div className="mainContainer">
                 <div className="header">
                   <div className ="inner">
-                      <Input icon='search' onChange={this.updateSearchQuery} placeholder='Search...' />
+                      <Input icon='search' className="searchInput" onChange={this.updateSearchQuery} placeholder='Search...' />
                       <Button onClick={this.fetchResults} type='submit'>Search</Button>
                   </div>
-                  <div className="quotescointainer">
-                    <div className="quotesleft">
+                  <div className="quotesContainer">
+                    <div className="quotesItem">
                       <div className="center">
-                        <Input placeholder='Exclude Words (Space Separated)'
+                        <Input placeholder='Exclude Words'
                         onChange={this.updateExcludedWords}/>
                       </div>
                     </div>
-                    <div className="quotescenter">
+                    <div className="quotesItem">
                       <div className="center">
                         <Dropdown placeholder='File Type'
                         selection
@@ -77,7 +77,7 @@ class App extends Component {
                         onChange={this.updateFiletypes}/>
                       </div>
                     </div>
-                    <div className="quotesright">
+                    <div className="quotesItem">
                       <div className="center">
                         <Dropdown placeholder='Role'
                         selection defaultValue=""
@@ -94,16 +94,20 @@ class App extends Component {
                       </h2>
                   }
                 </div>
-                <div className="ui relaxed divided list">
+                <div className="linksContainer">
                   { this.state.results.map((row) => {
                     return (
-                      <div className="item" key={row.id} style={{backgroundColor: "white" , padding: "5px"}} >
-                        <div className="content">
-                          <a className="header">{row.title}</a>
-                          <a className="item">{row.link}</a>
-                          <div className="description">{row.snippet}</div>
+                      <div className="linkContainer" key={row.id}>
+                        <div className="titleContainer">
+                            <a href={row.link}>{row.title}</a>
                         </div>
-                      </div>
+                          <div className="urlContainer">
+                              <a>{row.link}</a>
+                          </div>
+                          <div className="snippetContainer">
+                              <a>{row.snippet}</a>
+                          </div>
+                        </div>
                       )
                   })}
                </div>
@@ -131,7 +135,7 @@ class App extends Component {
         }
 
         let excludedWords = this.excludedWordsText.split(" ");
-        if (excludedWords.length > 0) {
+        if (this.excludedWordsText.length > 1 && excludedWords.length > 0) {
             excludedWords.forEach(function(excludedWord) {
                excludedWordsQuery += "-" + excludedWord + " ";
             });
