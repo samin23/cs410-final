@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Input, Label, Dropdown} from 'semantic-ui-react'
+import {Button, Input, Dropdown} from 'semantic-ui-react'
 import './App.css';
 import axios from 'axios'
 
@@ -7,6 +7,7 @@ const roleOptions = [
     {text: "Undergraduate Student", value: "Undergraduate Student"},
     {text: "Graduate Student", value: "Graduate Student"},
     {text: "Transfer Student", value: "Transfer Student"},
+    {text: "None", value: ""},
     {text: "Prospective Student", value: "Prospective Student"}
 ];
 
@@ -34,7 +35,7 @@ class App extends Component {
             "https://www.googleapis.com/customsearch/v1?key=AIzaSyC2ZX4EB6SH1HpWSt9U_wloNBoCAXMw6PE" +
             "&cx=008731622318034957631:wtj28fwp1ew&q=";
         this.searchQuery = "";
-        this.roleText = "Undergraduate Student";
+        this.roleText = "";
         this.filetypes = [];
         this.excludedWordsText = "";
 
@@ -54,69 +55,60 @@ class App extends Component {
     // 008731622318034957631:wtj28fwp1ew (Harpreet's)
 
     render() {
-        let headerFrame =
+      return(
             <div>
-                <Input placeholder='Search...'
-                       onChange={this.updateSearchQuery}
-                       size='big'/>
-                <Button size='big' onClick={this.fetchResults}>Submit</Button>
-                <Dropdown placeholder='Role'
-                          selection defaultValue="Undergraduate Student"
-                          options={roleOptions}
-                          onChange={this.updateRole}
-                          size='massive'/>
-                <Dropdown placeholder='File Type'
-                            fluid multiple selection
-                            size='massive'
-                            options={filetypeOptions}
-                            onChange={this.updateFiletypes}/>
-                <div>
-                    <Label>Exclude Words (Space Separated): </Label>
-                    <Input placeholder='Enter Words to Exclude'
-                           onChange={this.updateExcludedWords}
-                           size='big'/>
+                <div className="header">
+                  <div className ="inner">
+                      <Input icon='search' onChange={this.updateSearchQuery} placeholder='Search...' />
+                      <Button onClick={this.fetchResults} type='submit'>Search</Button>
+                  </div>
+                  <div className="quotescointainer">
+                    <div className="quotesleft">
+                      <div className="center">
+                        <Input placeholder='Exclude Words (Space Separated)'
+                        onChange={this.updateExcludedWords}/>
+                      </div>
+                    </div>
+                    <div className="quotescenter">
+                      <div className="center">
+                        <Dropdown placeholder='File Type'
+                        selection
+                        options={filetypeOptions}
+                        onChange={this.updateFiletypes}/>
+                      </div>
+                    </div>
+                    <div className="quotesright">
+                      <div className="center">
+                        <Dropdown placeholder='Role'
+                        selection defaultValue=""
+                        options={roleOptions}
+                        onChange={this.updateRole}/>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>;
-
-        if (this.state.results.length === 0) {
-            return this.noResultsFoundTemplate(headerFrame);
-        } else {
-            return this.resultsFoundTemplate(headerFrame);
-        }
-    }
-
-    noResultsFoundTemplate(headerFrame) {
-        return (
-            <div className="mainContainer">
-                {headerFrame}
                 <div>
-                    <Label>No Results to Show</Label>
+                  {this.state.results.length < 1 &&
+                      <h2 align="center" style={{padding: "5px"}}>
+                      Enter your query and select Search
+                      </h2>
+                  }
                 </div>
+                <div className="ui relaxed divided list">
+                  { this.state.results.map((row) => {
+                    return (
+                      <div className="item" key={row.id} style={{backgroundColor: "white" , padding: "5px"}} >
+                        <div className="content">
+                          <a className="header">{row.title}</a>
+                          <a className="item">{row.link}</a>
+                          <div className="description">{row.snippet}</div>
+                        </div>
+                      </div>
+                      )
+                  })}
+               </div>
             </div>
-        );
-    }
-
-    resultsFoundTemplate(headerFrame) {
-        return (
-            <div className="mainContainer">
-                {headerFrame}
-                <div>
-                    <ul>
-                        {
-                            this.state.results.map((row) => {
-                                return (
-                                    <li key={row.id}>
-                                        <div>{row.title}</div>
-                                        <div>{row.snippet}</div>
-                                    </li>
-                                )
-                            })}
-                    </ul>
-                </div>
-            </div>
-        )
-    }
-
+    )}
     // Event functions
     updateSearchQuery(event) {
         this.searchQuery = event.target.value;
@@ -159,13 +151,6 @@ class App extends Component {
             .then((responseData) => {
                 if (responseData !== undefined) {
                     console.log(responseData.length + ' results found');
-
-                    // responseData.forEach(function(response) {
-                    //     console.log("Title: " + response.title);
-                    //     console.log("Snippet: " + response.snippet);
-                    //     console.log("\n");
-                    // });
-
                     console.log(responseData);
                     this.setState({
                         results: responseData
