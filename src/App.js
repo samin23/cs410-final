@@ -1,27 +1,28 @@
 import React, {Component} from 'react';
-import {Button, Input, Dropdown} from 'semantic-ui-react'
+import {Button, Input, Dropdown, Checkbox} from 'semantic-ui-react'
 import './App.css';
 import axios from 'axios'
 
 const roleOptions = [
+    {text: "None", value: ""},
     {text: "Undergraduate Student", value: "Undergraduate Student"},
     {text: "Graduate Student", value: "Graduate Student"},
     {text: "Transfer Student", value: "Transfer Student"},
-    {text: "None", value: ""},
     {text: "Prospective Student", value: "Prospective Student"}
 ];
 
 const filetypeOptions = [
-    { text: 'Article', value: 'article' },
-    { text: 'Basic Page', value: 'basic_page' },
-    { text: 'Book Page', value: 'book_page' },
-    { text: 'Carousel', value: 'carousel' },
-    { text: 'Events', value: 'events' },
-    { text: 'Faculty Profile', value: 'faculty_profile' },
-    { text: 'Memoriam', value: 'memoriam' },
-    { text: 'News', value: 'news' },
-    { text: 'Webform', value: 'webform' },
-    { text: 'Welcome', value: 'welcome' },
+    {text: "None", value: ""},
+    {text: 'Article', value: 'article'},
+    {text: 'Basic Page', value: 'basic_page'},
+    {text: 'Book Page', value: 'book_page'},
+    {text: 'Carousel', value: 'carousel'},
+    {text: 'Events', value: 'events'},
+    {text: 'Faculty Profile', value: 'faculty_profile'},
+    {text: 'Memoriam', value: 'memoriam'},
+    {text: 'News', value: 'news'},
+    {text: 'Webform', value: 'webform'},
+    {text: 'Welcome', value: 'welcome'},
 ];
 
 class App extends Component {
@@ -38,12 +39,14 @@ class App extends Component {
         this.roleText = "";
         this.filetypes = [];
         this.excludedWordsText = "";
+        this.pdfResultsOnly = false;
 
         this.updateSearchQuery = this.updateSearchQuery.bind(this);
         this.fetchResults = this.fetchResults.bind(this);
         this.updateRole = this.updateRole.bind(this);
         this.updateFiletypes = this.updateFiletypes.bind(this);
         this.updateExcludedWords = this.updateExcludedWords.bind(this);
+        this.updatePdfResultsOnly = this.updatePdfResultsOnly.bind(this);
     }
 
     // API TOKEN
@@ -55,64 +58,74 @@ class App extends Component {
     // 008731622318034957631:wtj28fwp1ew (Harpreet's)
 
     render() {
-      return(
+        return (
             <div className="mainContainer">
                 <div className="header">
-                  <div className ="inner">
-                      <Input icon='search' className="searchInput" onChange={this.updateSearchQuery} placeholder='Search...' />
-                      <Button onClick={this.fetchResults} type='submit'>Search</Button>
-                  </div>
-                  <div className="quotesContainer">
-                    <div className="quotesItem">
-                      <div className="center">
-                        <Input placeholder='Exclude Words'
-                        onChange={this.updateExcludedWords}/>
-                      </div>
+                    <div className="inner">
+                        <Input icon='search' className="searchInput" onChange={this.updateSearchQuery}
+                               placeholder='Search...'/>
+                        <Button onClick={this.fetchResults} type='submit'>Search</Button>
                     </div>
-                    <div className="quotesItem">
-                      <div className="center">
-                        <Dropdown placeholder='File Type'
-                        selection
-                        options={filetypeOptions}
-                        onChange={this.updateFiletypes}/>
-                      </div>
+                    <div className="quotesContainer">
+                        <div className="quotesItem">
+                            <div className="center">
+                                <Input placeholder='Exclude Words'
+                                       onChange={this.updateExcludedWords}/>
+                            </div>
+                        </div>
+                        <div className="quotesItem">
+                            <div className="center">
+                                <Dropdown placeholder='File Type'
+                                          selection
+                                          options={filetypeOptions}
+                                          onChange={this.updateFiletypes}/>
+                            </div>
+                        </div>
+                        <div className="quotesItem">
+                            <div className="center">
+                                <Dropdown placeholder='Role'
+                                          selection defaultValue=""
+                                          options={roleOptions}
+                                          onChange={this.updateRole}/>
+                            </div>
+                        </div>
+                        <div className="quotesItem">
+                            <div className="center">
+                                <Checkbox
+                                    label={<label>PDF Results Only</label>}
+                                    onChange={this.updatePdfResultsOnly}/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="quotesItem">
-                      <div className="center">
-                        <Dropdown placeholder='Role'
-                        selection defaultValue=""
-                        options={roleOptions}
-                        onChange={this.updateRole}/>
-                      </div>
-                    </div>
-                  </div>
                 </div>
                 <div>
-                  {this.state.results.length < 1 &&
-                      <h2 align="center" style={{padding: "5px"}}>
-                      Enter your query and select Search
-                      </h2>
-                  }
+                    {this.state.results.length < 1 &&
+                    <h2 align="center" style={{padding: "5px"}}>
+                        Enter your query and select Search
+                    </h2>
+                    }
                 </div>
                 <div className="linksContainer">
-                  { this.state.results.map((row) => {
-                    return (
-                      <div className="linkContainer" key={row.id}>
-                        <div className="titleContainer">
-                            <a href={row.link}>{row.title}</a>
-                        </div>
-                          <div className="urlContainer">
-                              <a>{row.link}</a>
-                          </div>
-                          <div className="snippetContainer">
-                              <a>{row.snippet}</a>
-                          </div>
-                        </div>
-                      )
-                  })}
-               </div>
+                    {this.state.results.map((row) => {
+                        return (
+                            <div className="linkContainer" key={row.id}>
+                                <div className="titleContainer">
+                                    <a href={row.link}>{row.title}</a>
+                                </div>
+                                <div className="urlContainer">
+                                    <a>{row.link}</a>
+                                </div>
+                                <div className="snippetContainer">
+                                    <a>{row.snippet}</a>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
-    )}
+        )
+    }
+
     // Event functions
     updateSearchQuery(event) {
         this.searchQuery = event.target.value;
@@ -125,24 +138,30 @@ class App extends Component {
         let filetypes = this.filetypes;
         let filetypesQuery = "";
         let excludedWordsQuery = "";
+        let pdfResultsOnly = this.pdfResultsOnly;
+        let pdfQuery = "";
 
         if (filetypes.length > 0) {
             filetypesQuery += "type:";
             for (let i = 0; i < filetypes.length - 1; i++) {
                 filetypesQuery += filetypes[i] + ",";
             }
-            filetypesQuery += filetypes[filetypes.length-1];
+            filetypesQuery += filetypes[filetypes.length - 1];
         }
 
         let excludedWords = this.excludedWordsText.split(" ");
         if (this.excludedWordsText.length > 1 && excludedWords.length > 0) {
-            excludedWords.forEach(function(excludedWord) {
-               excludedWordsQuery += "-" + excludedWord + " ";
+            excludedWords.forEach(function (excludedWord) {
+                excludedWordsQuery += "-" + excludedWord + " ";
             });
         }
 
+        if (pdfResultsOnly) {
+            pdfQuery = "filetype:pdf";
+        }
+
         let queryUrl = roleText + " " + searchQuery +
-            " " + filetypesQuery + " " + excludedWordsQuery;
+            " " + filetypesQuery + " " + excludedWordsQuery + " " + pdfQuery;
         console.log(queryUrl);
         let encodedQueryUrl = encodeURI(queryUrl);
 
@@ -182,6 +201,11 @@ class App extends Component {
     updateExcludedWords(e, data) {
         this.excludedWordsText = data.value;
         console.log(this.excludedWordsText);
+    }
+
+    updatePdfResultsOnly(e, data) {
+        this.pdfResultsOnly = data.checked;
+        console.log(data.checked);
     }
 }
 
