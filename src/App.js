@@ -153,10 +153,9 @@ class App extends Component {
         )
     }
 
-    /** In general this function is called when a user clicks the submit button for search.
-     * It fetches the results after building the search query based on the currently
-     * selected values in the input boxes and the dropdowns.
-     */
+    // In general this function is called when a user clicks the submit button for search.
+    // It fetches the results after building the search query based on the currently
+    // selected values in the input boxes and the dropdowns.
     fetchResults() {
         console.log('FETCHING DATA');
         let searchQuery = this.searchQuery;
