@@ -1,8 +1,11 @@
+//the following imports are required for the code to complie, if you want to change certain formating or add requirements make sure to do npm install 
 import React, {Component} from 'react';
 import {Button, Input, Dropdown, Checkbox} from 'semantic-ui-react'
 import './App.css';
 import axios from 'axios'
 
+//this variable array holds the values for the type of student you are, add more here too add more detailed search
+//this value gets appened to the search string when we send the query to googles custom search engine
 const roleOptions = [
     {text: "None", value: ""},
     {text: "Undergraduate Student", value: "Undergraduate Student"},
@@ -11,6 +14,8 @@ const roleOptions = [
     {text: "Prospective Student", value: "Prospective Student"}
 ];
 
+//this array holds the type of file the user wants to seach for
+//when the user selects one we append file: and the option they selected to the query and then send to googles custom search engine
 const filetypeOptions = [
     {text: "None", value: ""},
     {text: 'Article', value: 'article'},
@@ -31,16 +36,19 @@ class App extends Component {
         this.state = {
             results: []
         };
-
+        //this baseUrl variable holds the intial api call to the custom search engine with the API key and the CX number included
         this.baseUrl =
             "https://www.googleapis.com/customsearch/v1?key=AIzaSyC2ZX4EB6SH1HpWSt9U_wloNBoCAXMw6PE" +
             "&cx=008731622318034957631:wtj28fwp1ew&q=";
+        //the following varibles are the ones we use to send the 
+        //query once the user selects opitions we build the query with these variables
         this.searchQuery = "";
         this.roleText = "";
         this.filetypes = [];
         this.excludedWordsText = "";
         this.pdfResultsOnly = false;
-
+        
+        //thses bind the functions we have defined below in our program
         this.updateSearchQuery = this.updateSearchQuery.bind(this);
         this.fetchResults = this.fetchResults.bind(this);
         this.updateRole = this.updateRole.bind(this);
@@ -49,11 +57,11 @@ class App extends Component {
         this.updatePdfResultsOnly = this.updatePdfResultsOnly.bind(this);
     }
 
-    // API TOKEN
+    // API TOKENs to use once limit of 100 per day is used since we have free accounts
     //AIzaSyBpXIM30QZZ3vaNakuU0oiYwRl9hMBIFps (Shivan's)
     //AIzaSyC2ZX4EB6SH1HpWSt9U_wloNBoCAXMw6PE (Harpreet's)
 
-    // CX TOKEN
+    // CX TOKENs for custom search since we using free acccount 100 limit again
     // 010701151667155428281:junz-utdbgg (Shivan's)
     // 008731622318034957631:wtj28fwp1ew (Harpreet's)
 
@@ -126,11 +134,15 @@ class App extends Component {
         )
     }
 
-    // Event functions
+    // Event functions when the user types into the search box this function updates the state of that 
+    //variable so we can have a proper query when we send it to google's api
     updateSearchQuery(event) {
         this.searchQuery = event.target.value;
     }
-
+    
+    //this function fetchResults does not take any input but when its called takes the query and appeneds all the additional
+    //options the user selected and makes a GET call to Google and on reterival of the search results updates the state of 
+    //the page with the resutlts shown
     fetchResults() {
         console.log('FETCHING DATA');
         let searchQuery = this.searchQuery;
@@ -187,22 +199,26 @@ class App extends Component {
                 }
             });
     }
-
+    // Event functions when the user selects their role this function updates the state of that 
+    //variable so we can have a proper query when we send it to google's api
     updateRole(e, data) {
         this.roleText = data.value;
         console.log(this.roleText);
     }
-
+    // Event functions when the user selects what type of file they want to search for
+    //this function updates the state of that variable so we can have a proper query when we send it to google's api
     updateFiletypes(e, data) {
         this.filetypes = data.value;
         console.log(this.filetypes);
     }
-
+    // Event functions when the user types into words to exclude box function updates the state of that 
+    //variable so we can have a proper query when we send it to google's api
     updateExcludedWords(e, data) {
         this.excludedWordsText = data.value;
         console.log(this.excludedWordsText);
     }
-
+    // Event functions when the user selects the pdf file box this function updates the state of that 
+    //variable so we can have a proper query when we send it to google's api
     updatePdfResultsOnly(e, data) {
         this.pdfResultsOnly = data.checked;
         console.log(data.checked);
