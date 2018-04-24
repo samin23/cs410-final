@@ -1,58 +1,107 @@
+/**
+This file contains the code for the CSS of the HTML elements of the site.
+ */
+
 .App {
   text-align: center;
 }
 
+/**
+Adding padding around the outermost body component.
+ */
 body {
     padding: 2% 5%;
 }
 
+/**
+Adding padding around the container inside body for better looks.
+ */
 .mainContainer {
     padding: 2%;
 }
 
-/* Header/Blog Title */
+/*
+Header/Blog Title
+This is for the header that contains all of the buttons and dropdowns
+for the custom search
+ */
 .header {
     padding: 2%;
     background: #fafafa;
 }
 
+/**
+This div contains the search bar and the search Button and centers them in the div.
+ */
 .inner {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/**
+This adds some margin to the right of the search input box so that there is some
+distance between the input box and the search button.
+ */
 .searchInput {
     margin-right: 2%;
 }
 
+/**
+This container div contains the dropdowns and the checbox for pdf
+ */
 .quotesContainer {
     display: flex;
     justify-content: center;
 }
 
+/**
+This refers to the dropdowns and the pdf search box
+ */
 .quotesItem {
     width: 33%;
     padding: 2%;
     text-align: center;
 }
 
+/**
+Links container is the container that displays the search results.
+ */
 .linksContainer {
     padding: 2%;
 }
 
+/**
+This is a single div containing a single search result.
+ */
 .linkContainer {
     margin: 2% 0%;
 }
 
+/**
+The container that contains the title of the link for one of the search result.
+Eg. Jiawei Han
+ */
 .titleContainer a {
     font-size: 20px;
 }
 
+/**
+This contains the url in the green color as google displays it in their results.
+Eg. https://cs.illinois.edu/directory/profile/hanj
+ */
 .urlContainer a {
     font-size: 15px;
     color: darkgreen;
 }
+
+/**
+This contains the snippet for the site that was found in the search results.
+PhD Student Wins 1 of 12 Microsoft Fellowships · Ren Receives Prestigious Google Fellowship ·
+ University of Illinois Collaborates with Mayo Clinic to Revolutionize Genomic Data Analysis ·
+  Wang Wins 2015 SIGKDD Dissertation Award · Department of Computer Science.
+  Thomas M. Siebel Center for Computer Science
+ */
 .snippetContainer a {
     font-size: 16px;
     color: black;
