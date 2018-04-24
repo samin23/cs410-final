@@ -1,6 +1,7 @@
 //the following imports are required for the code to complie, if you want to change certain formating or add requirements make sure to do npm install 
 import React, {Component} from 'react';
 import {Button, Input, Dropdown, Checkbox} from 'semantic-ui-react'
+//make all CSS changes in APP.css to have proper and neat coding style for HTML and React
 import './App.css';
 import axios from 'axios'
 
