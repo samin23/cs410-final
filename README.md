@@ -6,21 +6,32 @@
 2) Documentation of how the software is implemented with sufficient detail so that others can have a basic understanding of your code for future extension or any further improvement. 
 
 	Added into the App.js file 
+	
   	**ADD MORE HERE**
 
 
 3) Documentation of the usage of the software including either documentation of usages of APIs or detailed instructions on how to install and run a software, whichever is applicable. 
 
 	**ADD MORE HERE**
+	
   	Npm install
+	
 	Npm start 
+	
 	Open browser and go to localhost:3000
+	
   	API Code is include included in code comments 
+	
   	( https://developers.google.com/custom-search/docs/start)
+	
 
  4) Brief description of contribution of each team member in case of a multi-person team. 
  
     **ADD MORE HERE**
-	(50% of the work)Harpreet: Added all the advanced functionality buttons, restructured the code, added comments to the code, 
-	(50% of the work)Shivan: Set up google custom search, got api key, setup initial website with google api call, redesigned     the UI
+    
+	(50% of the work)Harpreet: Added all the advanced functionality buttons, restructured the code, added comments to the code 
+	
+	(50% of the work)Shivan: Set up google custom search, got api key, setup initial website with google api call, redesigned the UI
+	
 	Overall both of us evenly shared the work and got the project done that far exceeded our initial thoughts with a layout easy   for anyone to use.
+
