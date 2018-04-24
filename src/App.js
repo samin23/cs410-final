@@ -1,12 +1,12 @@
-//the following imports are required for the code to complie, if you want to change certain formating or add requirements make sure to do npm install 
+// The following imports are required for the code to compile.
 import React, {Component} from 'react';
 import {Button, Input, Dropdown, Checkbox} from 'semantic-ui-react'
-//make all CSS changes in APP.css to have proper and neat coding style for HTML and React
+// Make all CSS changes in APP.css to have proper and neat coding style for HTML and React
 import './App.css';
 import axios from 'axios'
 
-//this variable array holds the values for the type of student you are, add more here too add more detailed search
-//this value gets appened to the search string when we send the query to googles custom search engine
+// This const array holds the values for the type of student you are, add more here too add more detailed search
+// The value chosen gets appended to the search string when we send the query to googles custom search engine. For example, if one chooses Undergraduate Student from the dropdown, search query will contain "Undergraduate Student" for specific search results
 const roleOptions = [
     {text: "None", value: ""},
     {text: "Undergraduate Student", value: "Undergraduate Student"},
@@ -15,8 +15,8 @@ const roleOptions = [
     {text: "Prospective Student", value: "Prospective Student"}
 ];
 
-//this array holds the type of file the user wants to seach for
-//when the user selects one we append file: and the option they selected to the query and then send to googles custom search engine
+// This array holds the type of file the user wants to search for
+// When the user selects a filetype, we append "type:{filetype}" to the query and then send to googles custom search engine. For instance, if someone chooses "Article", we append "type
 const filetypeOptions = [
     {text: "None", value: ""},
     {text: 'Article', value: 'article'},
@@ -45,7 +45,7 @@ class App extends Component {
         //query once the user selects opitions we build the query with these variables
         this.searchQuery = "";
         this.roleText = "";
-        this.filetypes = [];
+        this.filetypesText = "";
         this.excludedWordsText = "";
         this.pdfResultsOnly = false;
         
@@ -148,18 +148,14 @@ class App extends Component {
         console.log('FETCHING DATA');
         let searchQuery = this.searchQuery;
         let roleText = this.roleText;
-        let filetypes = this.filetypes;
+        let filetypesText = this.filetypesText;
         let filetypesQuery = "";
         let excludedWordsQuery = "";
         let pdfResultsOnly = this.pdfResultsOnly;
         let pdfQuery = "";
 
-        if (filetypes.length > 0) {
-            filetypesQuery += "type:";
-            for (let i = 0; i < filetypes.length - 1; i++) {
-                filetypesQuery += filetypes[i] + ",";
-            }
-            filetypesQuery += filetypes[filetypes.length - 1];
+        if (filetypesText.length > 0) {
+            filetypesQuery += "type:" + filetypesText;
         }
 
         let excludedWords = this.excludedWordsText.split(" ");
@@ -209,8 +205,8 @@ class App extends Component {
     // Event functions when the user selects what type of file they want to search for
     //this function updates the state of that variable so we can have a proper query when we send it to google's api
     updateFiletypes(e, data) {
-        this.filetypes = data.value;
-        console.log(this.filetypes);
+        this.filetypesText = data.value;
+        console.log(this.filetypesText);
     }
     // Event functions when the user types into words to exclude box function updates the state of that 
     //variable so we can have a proper query when we send it to google's api
