@@ -72,15 +72,7 @@ class App extends Component {
         this.updateExcludedWords = this.updateExcludedWords.bind(this);
         this.updatePdfResultsOnly = this.updatePdfResultsOnly.bind(this);
     }
-
-    // API TOKENs to use once limit of 100 per day is used since we have free accounts
-    //AIzaSyBpXIM30QZZ3vaNakuU0oiYwRl9hMBIFps (Shivan's)
-    //AIzaSyC2ZX4EB6SH1HpWSt9U_wloNBoCAXMw6PE (Harpreet's)
-
-    // CX TOKENs for custom search since we using free acccount 100 limit again
-    // 010701151667155428281:junz-utdbgg (Shivan's)
-    // 008731622318034957631:wtj28fwp1ew (Harpreet's)
-
+    
     // This render function basically contains all the HTML code to layout the
     // webpage. The className are used for CSS styling and the code for CSS
     // styling can be found in the App.css file.
